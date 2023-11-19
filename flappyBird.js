@@ -1,155 +1,130 @@
-var w = window.innerWidth;
-var h = window.innerHeight;
-var cvs = document.getElementById("canvas");
-var ctx = cvs.getContext("2d");
+let w = window.innerWidth;
+let h = window.innerHeight;
 
-var a = null;
+let cvs = document.getElementById("canvas");
+let ctx = cvs.getContext("2d");
 
-window.addEventListener("resize", function() {
-    w = window.innerWidth;
-    h = window.innerHeight;
-    console.log('w ' + w + '- h ' + h);
+window.addEventListener("resize", function () {
+	w = window.innerWidth;
+	h = window.innerHeight;
+	console.log('w ' + w + '- h ' + h);
 
 });
 
+/*Load images*/
+let img_bird = new Image();
+let img_background = new Image();
+let img_foreground = new Image();
+let img_pipeUp = new Image();
+let img_pipeDown = new Image();
 
+img_bird.src = "images/bird.png";
+img_background.src = "images/bg.png";
+img_foreground.src = "images/fg.png";
+img_pipeUp.src = "images/pipeNorth.png";
+img_pipeDown.src = "images/pipeSouth.png";
 
+//TODO check the resource before add
 
+let gap = 120;
+let constant;
+let bX = 120;
+let bY = 150;
+let gravity = 1.5;
+let score = 0;
+let isLose = false;
 
+let speedSlow = 1;
 
-
-// load images
-
-var bird = new Image();
-var bg = new Image();
-var fg = new Image();
-var pipeNorth = new Image();
-var pipeSouth = new Image();
-
-bird.src = "images/bird.png";
-bg.src = "images/bg.png";
-fg.src = "images/fg.png";
-pipeNorth.src = "images/pipeNorth.png";
-pipeSouth.src = "images/pipeSouth.png";
-
-
-// some variables
-
-var gap = 120;
-var constant;
-
-var bX = 120;
-var bY = 150;
-
-var gravity = 1.5;
-
-var score = 0;
-
-var pipe = [];
-
-// audio files
-// var fly = new Audio();
-// var scor = new Audio();
-
-// fly.src = "sounds/fly.mp3";
-// scor.src = "sounds/score.mp3";
+let pipe = []
 
 pipe[0] = {
-    x: cvs.width,
-    y: 0
+	x: cvs.width,
+	y: 0
 };
 
 pipe[1] = {
-    x: cvs.width + 300,
-    y: -20
+	x: cvs.width + 300,
+	y: -20
 };
 
-// on key down
 
-isLose = false;
-
-cvs.addEventListener("mousedown", function() {
-    if (!isLose) {
-        smooth(30)
-    } else {
-        location.reload();
-        isLose = false;
-    }
-
-
-    // fly.play();
+cvs.addEventListener("mousedown", function () {
+	if (!isLose) {
+		smooth(30)
+	} else {
+		location.reload();
+		isLose = false;
+	}
+	// fly.play();
 })
 
-var speedSlow = 1;
 
 function smooth(Y) {
-    // var max = bY + Y;
-    // clearInterval(a);
-    // a = setInterval(draw, 5)
-    // if (bY == max)
-    //     a = setInterval(draw, 15)
-    bY -= Y;
+	// let max = bY + Y;
+	// clearInterval(a);
+	// a = setInterval(draw, 5)
+	// if (bY == max)
+	//     a = setInterval(draw, 15)
+	bY -= Y;
 }
 
 function draw() {
-    ctx.drawImage(bg, 0, 0);
+	ctx.drawImage(img_background, 0, 0);
 
+	for (let i = 0; i < pipe.length; i++) {
+		constant = img_pipeUp.height + gap;
 
-    for (var i = 0; i < pipe.length; i++) {
+		ctx.drawImage(img_pipeUp, pipe[i].x, pipe[i].y);
+		ctx.drawImage(img_pipeDown, pipe[i].x, pipe[i].y + constant);
 
-        constant = pipeNorth.height + gap;
-        ctx.drawImage(pipeNorth, pipe[i].x, pipe[i].y);
-        ctx.drawImage(pipeSouth, pipe[i].x, pipe[i].y + constant);
+		pipe[i].x -= 1 * speedSlow;
 
-        pipe[i].x -= 1 * speedSlow;
+		y_render = Math.floor(Math.random() * img_pipeUp.height) - img_pipeUp.height;
 
+		while (y_render > 0) {
+			y_render -= 50;
+		}
+		while (y_render < (-img_pipeUp.height + gap)) {
+			y_render += 50;
+		}
+		if (pipe[i].x == 0) {
+			pipe[i] = ({
+				x: cvs.width,
+				y: y_render
+			});
+		}
 
-        y_render = Math.floor(Math.random() * pipeNorth.height) - pipeNorth.height;
-        while (y_render > 0) {
-            y_render -= 50;
-        }
-        while (y_render < (-pipeNorth.height + gap)) {
-            y_render += 50;
-        }
-        if (pipe[i].x == 0) {
-            pipe[i] = ({
-                x: cvs.width,
-                y: y_render
-            });
-        }
+		// detect collision
+		if (
+			bX + img_bird.width >= pipe[i].x &&
+			bX <= pipe[i].x + img_pipeUp.width &&
+			((bY <= pipe[i].y + img_pipeUp.height) || (bY + img_bird.height >= pipe[i].y + constant)) ||
+			bY + img_bird.height >= cvs.height - img_foreground.height
+		) {
+			clearInterval(a);
+			ctx.drawImage(img_background, 0, 0);
+			ctx.fillStyle = "#000";
+			ctx.font = "20px Verdana";
+			ctx.fillText("Your Score : " + score, 200, 250);
+			isLose = true;
+		}
 
-        // detect collision
+		if (pipe[i].x == 50) {
+			score++;
+			// scor.play();
+		}
+	}
 
-        if (bX + bird.width >= pipe[i].x && bX <= pipe[i].x + pipeNorth.width && (bY <= pipe[i].y + pipeNorth.height || bY + bird.height >= pipe[i].y + constant) || bY + bird.height >= cvs.height - fg.height) {
-            clearInterval(a);
-            ctx.drawImage(bg, 0, 0);
-            ctx.fillStyle = "#000";
-            ctx.font = "20px Verdana";
-            ctx.fillText("Your Score : " + score, 200, 250);
-            isLose = true;
-        }
+	ctx.drawImage(img_foreground, 0, cvs.height - img_foreground.height);
 
-        if (pipe[i].x == 50) {
-            score++;
-            // scor.play();
-        }
+	ctx.drawImage(img_bird, bX, bY);
 
+	bY += gravity * speedSlow;
 
-    }
-
-    ctx.drawImage(fg, 0, cvs.height - fg.height);
-
-    ctx.drawImage(bird, bX, bY);
-
-    bY += gravity * speedSlow;
-
-    ctx.fillStyle = "#000";
-    ctx.font = "20px Verdana";
-    ctx.fillText("Score : " + score, 10, cvs.height - 20);
+	ctx.fillStyle = "#000";
+	ctx.font = "20px Verdana";
+	ctx.fillText("Score : " + score, 10, cvs.height - 20);
 }
 
-
-
-
 a = setInterval(draw, 15)
-    // draw();
