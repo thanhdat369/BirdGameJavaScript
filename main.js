@@ -6,17 +6,20 @@ let ctx = cvs.getContext("2d");
 
 /*Load images*/
 let img_bird = new Image();
+let img_bird_2 = new Image();
 let img_background = new Image();
 let img_foreground = new Image();
 let img_pipeUp = new Image();
 let img_pipeDown = new Image();
 
 img_bird.src = "images/bird.png";
+img_bird_2.src = "images/bird2.png";
 img_background.src = "images/bg.png";
 img_foreground.src = "images/fg.png";
 img_pipeUp.src = "images/pipeNorth.png";
 img_pipeDown.src = "images/pipeSouth.png";
 
+let curr_bird_image = 1;
 //TODO check the resource before add
 
 let gap = 100;
@@ -55,11 +58,6 @@ cvs.addEventListener("mousedown", function () {
 
 
 function smooth(Y) {
-	// let max = bY + Y;
-	// clearInterval(a);
-	// a = setInterval(draw, 5)
-	// if (bY == max)
-	//     a = setInterval(draw, 15)
 	birdCoord.y -= Y;
 }
 
@@ -85,12 +83,29 @@ let drawScore = (ctx, score, isLose) => {
 	ctx.fillText("Score : " + score, 10, cvs.height - 20);
 
 }
+let draw_bird = img_bird_2;
+let frame = 0;
+
+function changeBirdImage() {
+	if (draw_bird == img_bird_2) {
+		draw_bird = img_bird;
+	} else {
+		draw_bird = img_bird_2;
+	}
+}
 
 let drawBird = (ctx, birdCoord) => {
 	let bX = birdCoord.x
 	let bY = birdCoord.y
 	ctx.drawImage(img_foreground, 0, cvs.height - img_foreground.height);
-	ctx.drawImage(img_bird, bX, bY);
+	
+	if (frame > 20) {
+		frame = 0;
+		changeBirdImage();
+	}
+	frame += 1;
+	console.log(frame);
+	ctx.drawImage(draw_bird, bX, bY);
 }
 
 let randomYCoord = () => {
