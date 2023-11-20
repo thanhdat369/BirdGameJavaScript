@@ -21,8 +21,10 @@ img_pipeDown.src = "images/pipeSouth.png";
 
 let gap = 100;
 let constant;
-let bX = 120;
-let bY = 150;
+let birdCoord = {
+	x: 120,
+	y: 150
+}
 let gravity = 1;
 let score = 0;
 let isLose = false;
@@ -42,11 +44,6 @@ pipeDownCoord[1] = {
 	y: -20
 };
 
-pipeDownCoord[2] = {
-	x: cvs.width + 800,
-	y: -60
-};
-
 cvs.addEventListener("mousedown", function () {
 	if (!isLose) {
 		smooth(30)
@@ -63,7 +60,7 @@ function smooth(Y) {
 	// a = setInterval(draw, 5)
 	// if (bY == max)
 	//     a = setInterval(draw, 15)
-	bY -= Y;
+	birdCoord.y -= Y;
 }
 
 let drawBackground = (ctx) => {
@@ -88,6 +85,14 @@ let drawScore = (ctx, score, isLose) => {
 	ctx.fillText("Score : " + score, 10, cvs.height - 20);
 
 }
+
+let drawBird = (ctx, birdCoord) => {
+	let bX = birdCoord.x
+	let bY = birdCoord.y
+	ctx.drawImage(img_foreground, 0, cvs.height - img_foreground.height);
+	ctx.drawImage(img_bird, bX, bY);
+}
+
 let randomYCoord = () => {
 	y_render = Math.floor(Math.random() * img_pipeUp.height) - img_pipeUp.height;
 
@@ -97,6 +102,7 @@ let randomYCoord = () => {
 	while (y_render < (-img_pipeUp.height + gap)) {
 		y_render += 50;
 	}
+	return y_render;
 }
 
 function draw() {
@@ -121,10 +127,10 @@ function draw() {
 
 		// detect collision
 		if (
-			bX + img_bird.width >= pipeDownCoord[i].x &&
-			bX <= pipeDownCoord[i].x + img_pipeUp.width &&
-			((bY <= pipeDownCoord[i].y + img_pipeUp.height) || (bY + img_bird.height >= pipeDownCoord[i].y + constant)) ||
-			bY + img_bird.height >= cvs.height - img_foreground.height
+			birdCoord.x + img_bird.width >= pipeDownCoord[i].x &&
+			birdCoord.x <= pipeDownCoord[i].x + img_pipeUp.width &&
+			((birdCoord.y <= pipeDownCoord[i].y + img_pipeUp.height) || (birdCoord.y + img_bird.height >= pipeDownCoord[i].y + constant)) ||
+			birdCoord.y + img_bird.height >= cvs.height - img_foreground.height
 		) {
 			clearInterval(interval_object);
 			drawBackground(ctx);
@@ -136,13 +142,10 @@ function draw() {
 		}
 	}
 
-	ctx.drawImage(img_foreground, 0, cvs.height - img_foreground.height);
+	drawBird(ctx, birdCoord);
+	drawScore(ctx, score, isLose);
 
-	ctx.drawImage(img_bird, bX, bY);
-
-	bY += gravity * speedSlow;
-
-	drawScore(ctx,score,isLose);
+	birdCoord.y += gravity * speedSlow;
 }
 
 interval_object = setInterval(draw, 15)
