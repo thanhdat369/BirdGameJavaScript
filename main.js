@@ -1,6 +1,12 @@
 let w = window.innerWidth;
 let h = window.innerHeight;
 
+const FPS = 60;
+const time_per_frame = 1000/FPS; //1000ms
+// 1unit = 1px per frame in 60 FPS -> 120FPS 1 unit = 0.5px 
+const px_frame_unit = 60/FPS * 1;
+
+
 let cvs = document.getElementById("canvas");
 let ctx = cvs.getContext("2d");
 
@@ -32,7 +38,7 @@ let gravity = 1;
 let score = 0;
 let isLose = false;
 
-let speedSlow = 1;
+let speedSlow = 1 * px_frame_unit;
 
 let pipeDownCoord = []
 
@@ -163,4 +169,4 @@ function draw() {
 	birdCoord.y += gravity * speedSlow;
 }
 
-interval_object = setInterval(draw, 15)
+interval_object = setInterval(draw, time_per_frame)
