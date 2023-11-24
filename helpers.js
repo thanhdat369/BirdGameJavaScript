@@ -1,5 +1,11 @@
 let config = {
+    FPS: 60,
+    gap: 100,
+    gravity: 1
+}
 
+let colorConfig = {
+    textColor: "#00000",
 }
 
 let checkColision = (pipe, img_bird, img_pipeUp,cvs) => {
@@ -11,5 +17,5 @@ let checkColision = (pipe, img_bird, img_pipeUp,cvs) => {
     //     bY + img_bird.height >= cvs.height - img_foreground.height) {
     //     return true;
     // }
-    // else false;
+    // else false
 }
