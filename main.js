@@ -1,6 +1,7 @@
 let cvs = document.getElementById("canvas");
 let ctx = cvs.getContext("2d");
 
+// set config 
 const FPS = config.FPS;
 const gap = config.gap;
 const gravity = config.gravity;
@@ -9,9 +10,10 @@ const time_per_frame = 1000/FPS; //1000ms
 // 1unit = 1px per frame in 60 FPS -> 120FPS 1 unit = 0.5px 
 const px_frame_unit = 60/FPS * 1;
 
+// end set config
 
 
-/*Load images*/
+// load images
 let img_bird = new Image();
 let img_bird_2 = new Image();
 let img_background = new Image();
@@ -25,10 +27,10 @@ img_background.src = "images/bg.png";
 img_foreground.src = "images/fg.png";
 img_pipeUp.src = "images/pipe.png";
 img_pipeDown.src = "images/pipe.png";
-
 //TODO check the resource before add
 
 
+// init value
 let curr_bird_image = 1;
 let constant;
 let birdCoord = {
@@ -54,20 +56,28 @@ pipeDownCoord[1] = {
 	x: cvs.width + 300,
 	y: -20
 };
+// end init value
 
-cvs.addEventListener("mousedown", function () {
+let bird_draw_img = img_bird;
+
+function birdUp(value) {
+	birdCoord.y -= value;
+}
+
+function birdDown(value) {
+	birdCoord.y += value;
+}
+
+onMouseClickFunction = ()=> {
 	if (!isLose) {
-		smooth(40)
+		birdUp(40);
 	} else {
 		location.reload();
 		isLose = false;
 	}
-})
-
-
-function smooth(Y) {
-	birdCoord.y -= Y;
 }
+
+cvs.addEventListener("mousedown", onMouseClickFunction)
 
 let drawBackground = (ctx) => {
 	ctx.drawImage(img_background, 0, 0);
@@ -83,8 +93,9 @@ let drawPipe = (ctx, pipeDownCoord, constant) => {
 }
 
 let drawScore = (ctx, score, isLose) => {
-	ctx.fillStyle = "#000";
+	ctx.fillStyle = colorConfig.textColor;
 	ctx.font = "20px Verdana";
+
 	if (isLose) {
 		ctx.fillText("Your Score : " + score, 200, 250);
 		return;
@@ -93,7 +104,6 @@ let drawScore = (ctx, score, isLose) => {
 
 }
 
-let bird_draw_img = img_bird;
 
 function changeBirdImage() {
 	if (bird_draw_img == img_bird_2) {
@@ -113,7 +123,6 @@ let drawBird = (ctx, birdCoord) => {
 		changeBirdImage();
 	}
 	frame += 1;
-	console.log(frame);
 	ctx.drawImage(bird_draw_img, bX, bY);
 }
 
@@ -129,18 +138,26 @@ let randomYCoord = () => {
 	return y_render;
 }
 
+function isInnerRange(x1min,x1max,x2min,x2max){
+	if(x2min > x1min && x2min < x1max) { return true;}
+	if(x2max > x1min && x2max < x1max) {return true;}
+	return false;
+}
+
 function draw() {
 	drawBackground(ctx);
 
 	for (let i = 0; i < pipeDownCoord.length; i++) {
 		let constant = img_pipeUp.height + gap;
+
 		drawPipe(ctx, pipeDownCoord[i], constant)
 
 		pipeDownCoord[i].x -= 1 * speedSlow;
 
 		y_render = randomYCoord();
 
-		isPipeGoOutOfScreen = pipeDownCoord[i].x == 0;
+		isPipeGoOutOfScreen = pipeDownCoord[i].x < 0;
+
 		if (isPipeGoOutOfScreen) {
 			pipeDownCoord[i] = ({
 				x: cvs.width,
@@ -149,26 +166,50 @@ function draw() {
 		}
 
 		// detect collision
+		let xmin_bird = birdCoord.x;
+		let xmax_bird = birdCoord.x + img_bird.width;
+		let ymin_bird = birdCoord.y - img_bird.height;
+		let ymax_bird = birdCoord.y;
+
+		let xmin_pipe = pipeDownCoord[i].x;
+		let xmax_pipe = pipeDownCoord[i].x + img_pipeDown.width;
+		//     || 
+		//     ||
+		//    bird
+		//     ||
+		//     ||
+		// it collision when the bird in area of the pipe
+		// it like calculate iou
+		// or you can check it is in the safe area (center) when x of the column 
+		// same with x of bird
+		isBirdInnerPipe = isInnerRange(xmin_pipe,xmax_pipe,xmin_bird,xmax_bird)
+
+		isBirdLieInThePipe = ymin_bird <= pipeDownCoord[i].y + img_pipeDown.height || 
+								ymax_bird >= pipeDownCoord[i].y + constant;
+
+		isTheBirdCollisionWithThePipe = isBirdInnerPipe && isBirdLieInThePipe;
+		isBirdOutOfScreen = xmax_bird >= cvs.height || xmin_bird < 0;
+
 		if (
-			birdCoord.x + img_bird.width >= pipeDownCoord[i].x &&
-			birdCoord.x <= pipeDownCoord[i].x + img_pipeUp.width &&
-			((birdCoord.y <= pipeDownCoord[i].y + img_pipeUp.height) || (birdCoord.y + img_bird.height >= pipeDownCoord[i].y + constant)) 
-			|| birdCoord.y + img_bird.height >= cvs.height
+			isTheBirdCollisionWithThePipe || 
+			isBirdOutOfScreen
 		) {
 			clearInterval(interval_object);
 			drawBackground(ctx);
 			isLose = true;
 		}
 
-		if (pipeDownCoord[i].x == 50) {
+		is_pipe_through_checkpoint = pipeDownCoord[i].x == 50;
+
+		if (is_pipe_through_checkpoint) {
 			score++;
 		}
 	}
 
+	birdDown(gravity * speedSlow);
+
 	drawBird(ctx, birdCoord);
 	drawScore(ctx, score, isLose);
-
-	birdCoord.y += gravity * speedSlow;
 }
 
 interval_object = setInterval(draw, time_per_frame)
