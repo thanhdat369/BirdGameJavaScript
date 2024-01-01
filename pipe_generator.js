@@ -53,6 +53,5 @@ class PipeGenerator {
                 score_object.addScore();
             }
         });
-        // check conlision
     }
 }
