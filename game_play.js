@@ -1,3 +1,8 @@
+const GameState  = {
+    Playing: 1,
+    Lose: 0
+}
+
 class GamePlayDependencies {
     constructor() {
 
@@ -33,11 +38,6 @@ class GamePlayDependencies {
     getScore(obj) {
         return this.scoreObject;
     }
-}
-
-const GameState  = {
-    Playing: 1,
-    Lose: 0
 }
 
 class GamePlay {
