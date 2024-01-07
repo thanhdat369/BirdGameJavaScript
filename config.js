@@ -15,7 +15,6 @@ const img_foreground = "images/fg.png";
 const img_pipeUp = "images/pipe.png";
 const img_pipeDown = "images/pipe.png";
 
-
 const DEFAULT_COORD_PIPES = [
     {x:500,y:250, gap: 30 },
     {x:550,y:250}

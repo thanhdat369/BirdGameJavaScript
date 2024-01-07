@@ -4,13 +4,13 @@ class PipeGenerator {
         this.__default_pipe();
     }
 
-    __default_pipe(){
+    __default_pipe() {
         //TODO remove this function
-        let pipeObject1 = new DoublePipe(ctx,img_pipeUp,img_pipeDown);
-        pipeObject1.setXY(cvs.width,100);
+        let pipeObject1 = new DoublePipe(ctx, img_pipeUp, img_pipeDown);
+        pipeObject1.setXY(cvs.width, 100);
         pipeObject1.setGap(100);
-        let pipeObject2 = new DoublePipe(ctx,img_pipeUp,img_pipeDown);
-        pipeObject2.setXY(cvs.width+300, -20);
+        let pipeObject2 = new DoublePipe(ctx, img_pipeUp, img_pipeDown);
+        pipeObject2.setXY(cvs.width + 300, -20);
         pipeObject2.setGap(20);
 
         this.listPipe.push(pipeObject1);
@@ -21,15 +21,15 @@ class PipeGenerator {
         return this.listPipe;
     }
 
-    __isCollision(bird){
+    __isCollision(bird) {
         isPipeGoOutOfScreen = pipe.x < 0;
-		if (isPipeGoOutOfScreen) {
-			pipe.setXY(cvs.width,y_render);
-		}
+        if (isPipeGoOutOfScreen) {
+            pipe.setXY(cvs.width, y_render);
+        }
     }
 
     handle() {
-        pipeDownCoord.forEach( (pipe) => {
+        pipeDownCoord.forEach((pipe) => {
             pipe.draw();
 
             pipe.moveLeft(1 * SPEEDSLOW);
@@ -40,10 +40,9 @@ class PipeGenerator {
             isBirdOutOfScreen = bird.getXMax() >= cvs.height || bird.getX() < 0;
 
             if (
-                pipe.checkColision(bird) || 
+                pipe.checkColision(bird) ||
                 isBirdOutOfScreen
-            ) 
-            {
+            ) {
                 clearInterval(interval_object);
                 drawBackground(ctx);
             }

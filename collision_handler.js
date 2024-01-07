@@ -2,6 +2,4 @@ class ConllisionHandler {
     constructor(ctx){
 
     }
-
-    
 }
