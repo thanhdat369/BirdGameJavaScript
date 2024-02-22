@@ -1,4 +1,4 @@
-const GameState  = {
+const GameState = {
     Playing: 1,
     Lose: 0
 }
@@ -7,15 +7,15 @@ class GamePlayDependencies {
     constructor() {
 
     }
-    registerBackgroundObject(obj){
+    registerBackgroundObject(obj) {
         this.backgroundDrawObject = obj;
     }
 
-    registerForegroudObject(obj){
+    registerForegroudObject(obj) {
         this.foregroundDrawObject = obj;
     }
 
-    registerBirdObject(obj){
+    registerBirdObject(obj) {
         this.birdObject = obj;
     }
 
@@ -23,25 +23,25 @@ class GamePlayDependencies {
         this.scoreObject = obj;
     }
 
-    getBackgroundObject(){
-        return this.backgroundDrawObject; 
+    getBackgroundObject() {
+        return this.backgroundDrawObject;
     }
 
-    getForegroudObject(){
+    getForegroudObject() {
         return this.foregroundDrawObject;
     }
 
-    getBirdObject(){
+    getBirdObject() {
         return this.birdObject;
     }
 
-    getScore(obj) {
+    getScore() {
         return this.scoreObject;
     }
 }
 
 class GamePlay {
-    constructor(gamePlayDependency){
+    constructor(gamePlayDependency) {
         this.gamePlayDependency = gamePlayDependency;
         this.__getFromDependencies();
         this.GamePlay = GameState.Lose;
@@ -54,16 +54,21 @@ class GamePlay {
         this.scoreObject = this.gamePlayDependency.getScore();
     }
 
+    __drawBackground() {
+        this.backgroundDrawObject.draw();
+        this.scoreObject.draw();
+    }
+
     onClickHandle() {
         this.birdObject.up(30);
     }
 
     handle() {
-        this.backgroundDrawObject.draw();
-        this.birdObject.draw();
-        this.scoreObject.draw();
+        this.__drawBackground();
 
-	    this.birdObject.down(GRAVITY * SPEEDSLOW);
+        this.birdObject.draw();
+        this.birdObject.down(GRAVITY * SPEEDSLOW);
+
     }
 
     play() {
