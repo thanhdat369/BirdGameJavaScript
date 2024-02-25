@@ -1,5 +1,3 @@
 class ConllisionHandler {
-    constructor(ctx){
-
-    }
+    constructor(ctx) {}
 }
