@@ -12,17 +12,19 @@ foregroundDrawObject.setLocation(
 let score_object = new Score(ctx);
 let bird = new Bird(ctx, img_bird);
 
-var gamePlayDependency = new GamePlayDependencies();
-gamePlayDependency.registerBackgroundObject(backgroundDrawObject);
-gamePlayDependency.registerForegroudObject(foregroundDrawObject);
-gamePlayDependency.registerBirdObject(bird);
-gamePlayDependency.registerScore(score_object);
-// gamePlayDependency.registerDoublePipeObject();
+var gamePlayDependencies = new GamePlayDependencies();
+gamePlayDependencies.registerBackgroundObject(backgroundDrawObject);
+gamePlayDependencies.registerForegroudObject(foregroundDrawObject);
+gamePlayDependencies.registerBirdObject(bird);
+gamePlayDependencies.registerScore(score_object);
+// gamePlayDependencies.registerDoublePipeObject();
 
-var gamePlayObj = new GamePlay(gamePlayDependency);
+var gamePlayObj = new GamePlay(gamePlayDependencies);
+
 onClickHandle = () => {
     gamePlayObj.onClickHandle();
 };
+
 cvs.addEventListener("mousedown", onClickHandle);
 
 function play() {
