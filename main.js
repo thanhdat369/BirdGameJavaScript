@@ -21,11 +21,13 @@ gamePlayDependencies.registerScore(score_object);
 
 var gamePlayObj = new GamePlay(gamePlayDependencies);
 
-onClickHandle = () => {
+let onClickHandle = () => {
     gamePlayObj.onClickHandle();
 };
 
 cvs.addEventListener("mousedown", onClickHandle);
+
+setInterval(gamepadEventCheck.bind(this, onClickHandle), 100);
 
 function play() {
     gamePlayObj.play();
