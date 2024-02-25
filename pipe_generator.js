@@ -39,10 +39,7 @@ class PipeGenerator {
             // detect collision
             isBirdOutOfScreen = bird.getXMax() >= cvs.height || bird.getX() < 0;
 
-            if (
-                pipe.checkColision(bird) ||
-                isBirdOutOfScreen
-            ) {
+            if (pipe.checkColision(bird) || isBirdOutOfScreen) {
                 clearInterval(interval_object);
                 drawBackground(ctx);
             }
