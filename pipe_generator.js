@@ -11,7 +11,6 @@ class PipeGenerator {
         pipeObject1.setGap(100);
         let pipeObject2 = new DoublePipe(ctx, img_pipeUp, img_pipeDown);
         pipeObject2.setXY(cvs.width + 300, -20);
-        pipeObject2.setGap(20);
 
         this.listPipe.push(pipeObject1);
         this.listPipe.push(pipeObject2);
@@ -26,6 +25,17 @@ class PipeGenerator {
         if (isPipeGoOutOfScreen) {
             pipe.setXY(cvs.width, y_render);
         }
+    }
+
+    draw() {
+        this.listPipe.forEach((pipe) => {
+            pipe.draw();
+            pipe.moveLeft(1 * SPEEDSLOW);
+
+            if (pipe.x < 0) {
+                pipe.x = 700;
+            }
+        });
     }
 
     handle() {
