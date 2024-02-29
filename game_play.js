@@ -23,6 +23,10 @@ class GamePlayDependencies {
         this.scoreObject = obj;
     }
 
+    registerDoublePipeObject(obj) {
+        this.doublePipe = obj;
+    }
+
     getBackgroundObject() {
         return this.backgroundDrawObject;
     }
@@ -38,6 +42,10 @@ class GamePlayDependencies {
     getScore() {
         return this.scoreObject;
     }
+
+    getDoublePipeObject() {
+        return this.doublePipe;
+    }
 }
 
 class GamePlay {
@@ -52,6 +60,7 @@ class GamePlay {
         this.backgroundDrawObject = this.gamePlayDependency.getBackgroundObject();
         this.foregroundDrawObject = this.gamePlayDependency.getForegroudObject();
         this.scoreObject = this.gamePlayDependency.getScore();
+        this.doublePipeObject = this.gamePlayDependency.getDoublePipeObject();
     }
 
     __drawBackground() {
@@ -65,6 +74,7 @@ class GamePlay {
 
     handle() {
         this.__drawBackground();
+        this.doublePipeObject.draw();
 
         this.birdObject.draw();
         this.birdObject.down(GRAVITY * SPEEDSLOW);

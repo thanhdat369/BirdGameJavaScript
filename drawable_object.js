@@ -68,7 +68,7 @@ class DoublePipe {
         this.imagePipeUp = imagePipeUp;
         this.pipeUp = new BaseDrawObject(this.ctx, this.imagePipeUp);
         this.pipeDown = new BaseDrawObject(this.ctx, this.imagePipeDown);
-        this.gap = 0;
+        this.gap = 100;
         this.x = 0;
         this.y = 0;
     }
@@ -113,8 +113,10 @@ class DoublePipe {
     }
 
     setCenterYLocation() {
-        this.y_pipDown = parseInt(this.y + this.gap / 2);
-        this.y_pipUp = this.y_pipDown - this.gap - this.imagePipeUp.height;
+        this.y_pipDown = this.y + this.gap / 2;
+        this.y_pipUp = this.y_pipDown - this.gap - this.pipeUp.getImageHeight();
+        console.log("pipup",this.y_pipUp);
+        console.log("pipdown",this.y_pipDown);
     }
 
     moveLeft(val) {
