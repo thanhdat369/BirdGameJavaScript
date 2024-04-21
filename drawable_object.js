@@ -114,8 +114,12 @@ class DoublePipe {
     }
 
     setCenterYLocation() {
-        this.y_pipUp = this.y + this.gap / 2;
-        this.y_pipDown = this.y_pipUp - this.gap - this.pipeDown.getImageHeight();
+        this.y_pipDown = this.y - this.gap / 2;
+        this.y_pipUp = this.y_pipDown + this.gap/2 + this.pipeUp.getImageHeight();
+    }
+
+    getImageWidth() {
+        return this.pipeDown.getImageWidth();
     }
 
     moveLeft(val) {
