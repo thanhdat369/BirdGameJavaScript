@@ -6,6 +6,7 @@ var gamePlayDependencies = new GamePlayDependencies();
 
 let backgroundDrawObject = new BaseDrawObject(ctx, img_background);
 backgroundDrawObject.setLocation(0, 0);
+
 let foregroundDrawObject = new BaseDrawObject(ctx, img_foreground);
 foregroundDrawObject.setLocation(
     0,

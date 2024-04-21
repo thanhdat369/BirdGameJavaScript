@@ -79,6 +79,8 @@ class GamePlay {
         this.birdObject.draw();
         this.birdObject.down(GRAVITY * SPEEDSLOW);
 
+        this.foregroundDrawObject.draw();
+
     }
 
     play() {
