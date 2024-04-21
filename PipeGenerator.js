@@ -5,15 +5,16 @@ class PipeGenerator {
     }
 
     __default_pipe() {
-        //TODO remove this function
+        //TODO remove this function and replace by map
         let pipeObject1 = new DoublePipe(ctx, img_pipeUp, img_pipeDown);
-        pipeObject1.setXY(cvs.width, 100);
-        pipeObject1.setGap(300);
-        // let pipeObject2 = new DoublePipe(ctx, img_pipeUp, img_pipeDown);
-        // pipeObject2.setXY(cvs.width + 300, -20);
+        pipeObject1.setXY(cvs.width, 10);
+        pipeObject1.setGap(100)
+        let pipeObject2 = new DoublePipe(ctx, img_pipeUp, img_pipeDown);
+        pipeObject2.setXY(cvs.width + 300, -10);
+        pipeObject2.setGap(150);
 
         this.listPipe.push(pipeObject1);
-        // this.listPipe.push(pipeObject2);
+        this.listPipe.push(pipeObject2);
     }
 
     getListPipe() {
@@ -21,10 +22,10 @@ class PipeGenerator {
     }
 
     __isCollision(bird) {
-        isPipeGoOutOfScreen = pipe.x < 0;
-        if (isPipeGoOutOfScreen) {
-            pipe.setXY(cvs.width, y_render);
-        }
+        // isPipeGoOutOfScreen = pipe.x < 0;
+        // if (isPipeGoOutOfScreen) {
+        //     pipe.setXY(cvs.width, y_render);
+        // }
     }
 
     draw() {
@@ -32,7 +33,7 @@ class PipeGenerator {
             pipe.draw();
             pipe.moveLeft(1 * SPEEDSLOW);
 
-            if (pipe.x < 0) {
+            if (pipe.x < 0 - pipe.getImageWidth()) {
                 pipe.x = 700;
             }
         });

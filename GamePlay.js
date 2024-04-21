@@ -36,6 +36,7 @@ class GamePlay {
         this.doublePipeObject.draw();
 
         this.birdObject.draw();
+
         if(this.birdObject.getY() < 400) { 
             this.birdObject.down(GRAVITY * SPEEDSLOW);
         }
