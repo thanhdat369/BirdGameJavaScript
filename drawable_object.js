@@ -107,16 +107,15 @@ class DoublePipe {
         this.y = y;
         this.setCenterYLocation();
     }
+
     setGap(gap) {
         this.gap = gap;
         this.setCenterYLocation();
     }
 
     setCenterYLocation() {
-        this.y_pipDown = this.y + this.gap / 2;
-        this.y_pipUp = this.y_pipDown - this.gap - this.pipeUp.getImageHeight();
-        console.log("pipup",this.y_pipUp);
-        console.log("pipdown",this.y_pipDown);
+        this.y_pipUp = this.y + this.gap / 2;
+        this.y_pipDown = this.y_pipUp - this.gap - this.pipeDown.getImageHeight();
     }
 
     moveLeft(val) {
@@ -126,6 +125,7 @@ class DoublePipe {
     resetX(X) {
         this.x = X;
     }
+
     getX() {
         return this.x;
     }

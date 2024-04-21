@@ -19,3 +19,17 @@ const DEFAULT_COORD_PIPES = [
     { x: 500, y: 250, gap: 30 },
     { x: 550, y: 250 },
 ];
+
+DEBUG = true;
+
+
+const MessageCollision = {
+    CapiOutOfScreen: 1,
+    FlyToTree:2
+}
+
+function debug_print(msg) {
+    if (DEBUG) {
+        console.log(msg);
+    }
+}
