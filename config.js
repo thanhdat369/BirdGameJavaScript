@@ -12,8 +12,8 @@ const SPEEDSLOW = 1 * PX_FRAME_UNIT;
 const img_bird = "images/bird.png";
 const img_background = "images/bg.png";
 const img_foreground = "images/fg.png";
-const img_pipeUp = "images/pipe.png";
-const img_pipeDown = "images/pipe.png";
+const img_pipeUp = "images/pipeUp.png";
+const img_pipeDown = "images/pipeDown.png";
 
 const DEFAULT_COORD_PIPES = [
     { x: 500, y: 250, gap: 30 },
