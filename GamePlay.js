@@ -3,56 +3,15 @@ const GameState = {
     Lose: 0
 }
 
-class GamePlayDependencies {
-    constructor() {
+FLY_UP_VEC = 30;
 
-    }
-    registerBackgroundObject(obj) {
-        this.backgroundDrawObject = obj;
-    }
-
-    registerForegroudObject(obj) {
-        this.foregroundDrawObject = obj;
-    }
-
-    registerBirdObject(obj) {
-        this.birdObject = obj;
-    }
-
-    registerScore(obj) {
-        this.scoreObject = obj;
-    }
-
-    registerDoublePipeObject(obj) {
-        this.doublePipe = obj;
-    }
-
-    getBackgroundObject() {
-        return this.backgroundDrawObject;
-    }
-
-    getForegroudObject() {
-        return this.foregroundDrawObject;
-    }
-
-    getBirdObject() {
-        return this.birdObject;
-    }
-
-    getScore() {
-        return this.scoreObject;
-    }
-
-    getDoublePipeObject() {
-        return this.doublePipe;
-    }
-}
 
 class GamePlay {
     constructor(gamePlayDependency) {
         this.gamePlayDependency = gamePlayDependency;
         this.__getFromDependencies();
-        this.GamePlay = GameState.Lose;
+        // this.GamePlay = GameState.Lose;
+        this.msg
     }
 
     __getFromDependencies() {
@@ -69,7 +28,7 @@ class GamePlay {
     }
 
     onClickHandle() {
-        this.birdObject.up(30);
+        this.birdObject.up(FLY_UP_VEC);
     }
 
     handle() {
@@ -77,9 +36,14 @@ class GamePlay {
         this.doublePipeObject.draw();
 
         this.birdObject.draw();
-        this.birdObject.down(GRAVITY * SPEEDSLOW);
+        if(this.birdObject.getY() < 400) { 
+            this.birdObject.down(GRAVITY * SPEEDSLOW);
+        }
 
         this.foregroundDrawObject.draw();
+    }
+
+    receiveTheMessageCollision(msg) {
 
     }
 

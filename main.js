@@ -16,12 +16,17 @@ let score_object = new Score(ctx);
 let bird = new Bird(ctx, img_bird);
 let doublePipe = new PipeGenerator()
 
+// add to gamePlayDependencies
+
 gamePlayDependencies.registerBackgroundObject(backgroundDrawObject);
 gamePlayDependencies.registerForegroudObject(foregroundDrawObject);
 gamePlayDependencies.registerBirdObject(bird);
 gamePlayDependencies.registerScore(score_object);
 gamePlayDependencies.registerDoublePipeObject(doublePipe);
 
+gamePlayDependencies.verify();
+
+// Add to GamePlay
 var gamePlayObj = new GamePlay(gamePlayDependencies);
 
 let onClickHandle = () => {
