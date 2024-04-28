@@ -73,7 +73,7 @@ class DoublePipe {
         this.y = 0;
     }
 
-    checkColision(bird) {
+    checkCollision(bird) {
         // it collision when the bird in area of the pipe
         // it like calculate iou
         // or you can check it is in the safe area (center) when x of the column
@@ -90,14 +90,15 @@ class DoublePipe {
         let ymax = bird.getYMax();
 
         let isBirdInnerPipe = isInnerRange(
-            this.pipeDown.getX(),
-            this.pipeDown.getXMax(),
+            this.pipeDown.getX() + 20,
+            this.pipeDown.getXMax() - 10,
             xmin,
             xmax
         );
 
         let isBirdLieInThePipe =
-            ymin <= this.pipeUp.getYMax() || ymax >= this.pipeDown.getX();
+            ymin <= this.pipeDown.getYMax()-10 || ymax >= this.pipeUp.getY() + 10;
+        // This mean the bird is in the pipe
 
         return isBirdInnerPipe && isBirdLieInThePipe;
     }
