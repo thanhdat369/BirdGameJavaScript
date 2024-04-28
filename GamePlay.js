@@ -7,11 +7,11 @@ FLY_UP_VEC = 30;
 
 
 class GamePlay {
-    constructor(gamePlayDependency) {
+    constructor(ctx,gamePlayDependency) {
         this.gamePlayDependency = gamePlayDependency;
         this.__getFromDependencies();
-        // this.GamePlay = GameState.Lose;
-        this.msg
+        this.collisionHandler = new ConllisionHandler(gamePlayDependency);
+        this.gameOver = false;
     }
 
     __getFromDependencies() {
@@ -28,10 +28,16 @@ class GamePlay {
     }
 
     onClickHandle() {
-        this.birdObject.up(FLY_UP_VEC);
+        if (this.gameOver) {
+            this.gameOver = false;
+            document.location.reload();
+        }
+        else {
+            this.birdObject.up(FLY_UP_VEC);
+        }
     }
 
-    handle() {
+    gamePlayNormal() {
         this.__drawBackground();
         this.doublePipeObject.draw();
 
@@ -41,11 +47,29 @@ class GamePlay {
             this.birdObject.down(GRAVITY * SPEEDSLOW);
         }
 
+        if (this.collisionHandler.checkCollision()) {
+            this.gameOver = true;
+        }
+
         this.foregroundDrawObject.draw();
     }
 
-    receiveTheMessageCollision(msg) {
+    notify(gamePlayType) {
+        if (gamePlayType == NotifyGamePlay.Collison) {
+            this.gameOver = true;
+        }
+        if (gamePlayType == NotifyGamePlay.AddScore) {
+            this.scoreObject.addScore(1);
+        }
+    }
 
+
+    handle() {
+        if (!this.gameOver) {
+            this.gamePlayNormal();
+        } else {
+            this.showGame
+        }
     }
 
     play() {

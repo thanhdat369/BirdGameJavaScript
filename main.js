@@ -24,10 +24,14 @@ gamePlayDependencies.registerBirdObject(bird);
 gamePlayDependencies.registerScore(score_object);
 gamePlayDependencies.registerDoublePipeObject(doublePipe);
 
+// verify the dependencies
 gamePlayDependencies.verify();
 
 // Add to GamePlay
-var gamePlayObj = new GamePlay(gamePlayDependencies);
+var gamePlayObj = new GamePlay(ctx,gamePlayDependencies);
+
+doublePipe.registerGamePlay(gamePlayObj);
+doublePipe.registerBird(bird);
 
 let onClickHandle = () => {
     gamePlayObj.onClickHandle();
@@ -35,10 +39,10 @@ let onClickHandle = () => {
 
 cvs.addEventListener("mousedown", onClickHandle);
 
-setInterval(gamepadEventCheck.bind(this, onClickHandle), 100);
-
 function play() {
     gamePlayObj.play();
 }
+
+setInterval(gamepadEventCheck.bind(this, onClickHandle), 100);
 
 interval_object = setInterval(play, TIME_PER_FRAME);
